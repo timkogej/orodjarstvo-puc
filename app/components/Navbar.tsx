@@ -91,14 +91,16 @@ export function Navbar() {
           })}
         </div>
 
-        {/* CTA — desktop */}
-        <button
-          onClick={() => scrollTo('#kontakt')}
-          className="hidden lg:inline-flex btn-primary btn-primary-light items-center gap-2"
-        >
-          Pošljite povpraševanje
-          <ArrowRight size={15} />
-        </button>
+        {/* CTA — desktop only */}
+        <div className="hidden lg:block">
+          <button
+            onClick={() => scrollTo('#kontakt')}
+            className="btn-primary btn-primary-light inline-flex items-center gap-2"
+          >
+            Pošljite povpraševanje
+            <ArrowRight size={15} />
+          </button>
+        </div>
 
         {/* Hamburger — mobile */}
         <button
