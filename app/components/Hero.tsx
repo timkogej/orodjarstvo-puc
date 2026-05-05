@@ -24,11 +24,6 @@ const CHIPS = [
   'Hitro prototipiranje',
 ];
 
-const SPEC_ROWS: [string, string][] = [
-  ['Toleranca', '±0,01 mm'],
-  ['Materiali', 'Jeklo · Aluminij · Inox'],
-  ['Odziv na povpraševanje', '≤ 24h'],
-];
 
 function scrollTo(id: string) {
   const el = document.getElementById(id);
@@ -133,26 +128,12 @@ export function Hero() {
                 kovin po meri.
               </motion.h1>
 
-              <motion.div variants={heroItem} className="grid grid-cols-[1.3fr_1fr] gap-8 mb-10">
-                <p className="text-[17px] text-brand-text-dim leading-relaxed">
+              <motion.div variants={heroItem} className="mt-8 lg:mt-10 mb-10">
+                <p className="text-[16px] lg:text-[18px] leading-relaxed max-w-2xl text-brand-text-dim">
                   Izdelujemo orodja, kovinske dele za stroje in tehnično zahtevne komponente z visokim
                   poudarkom na natančnosti, zanesljivosti in dogovorjenih rokih. Sodelujemo z
                   industrijskimi naročniki po vsej Sloveniji.
                 </p>
-                <div className="bg-white">
-                  {SPEC_ROWS.map(([k, v], i) => (
-                    <div
-                      key={i}
-                      className="flex justify-between items-center px-4 py-3 border-b last:border-b-0"
-                      style={{ borderColor: 'rgba(11,15,20,0.08)' }}
-                    >
-                      <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-brand-text-dim-light">
-                        {k}
-                      </span>
-                      <span className="font-mono text-[11px] text-brand-bg font-semibold">{v}</span>
-                    </div>
-                  ))}
-                </div>
               </motion.div>
 
               <motion.div variants={heroItem} className="flex gap-3 mb-10">
@@ -272,20 +253,6 @@ export function Hero() {
               poudarkom na natančnosti in dogovorjenih rokih.
             </motion.p>
 
-            {/* Spec table */}
-            <motion.div variants={heroItem} className="border border-brand-bg-line mb-7">
-              {SPEC_ROWS.map(([k, v], i) => (
-                <div
-                  key={i}
-                  className="flex justify-between items-center px-4 py-2.5 border-b border-brand-bg-line last:border-b-0"
-                >
-                  <span className="font-mono text-[10px] tracking-[0.1em] uppercase text-brand-text-dim">
-                    {k}
-                  </span>
-                  <span className="font-mono text-[10px] text-white font-medium">{v}</span>
-                </div>
-              ))}
-            </motion.div>
 
             {/* CTAs — stacked full-width */}
             <motion.div variants={heroItem} className="flex flex-col gap-3 mb-7">

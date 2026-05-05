@@ -5,10 +5,12 @@ import { motion } from 'framer-motion';
 import { EASE_OUT, EASE_IN_OUT } from '@/lib/easing';
 import { StatItem } from './ui/StatItem';
 
-const STATS = [
+type Stat = { value: number; suffix: string; label: string; prefix?: string; decimals?: number };
+
+const STATS: Stat[] = [
   { value: 10, suffix: '+', label: 'Let izkušenj' },
   { value: 500, suffix: '+', label: 'Realiziranih projektov' },
-  { value: 0.01, suffix: 'mm', prefix: '±', label: 'Natančnost tolerance', decimals: 2 },
+  { value: 24, suffix: 'h', label: 'Odzivni čas na povpraševanje' },
   { value: 100, suffix: '%', label: 'Zanesljivost rokov' },
 ];
 
@@ -100,8 +102,8 @@ export function About() {
             >
               <p className="text-[16px] lg:text-[17px] leading-relaxed text-[#3B4552]">
                 V <span className="font-semibold text-brand-bg">Orodjarstvu Puc</span> združujemo
-                tradicijo natančne slovenske obrti s sodobno CNC tehnologijo. Specializirani smo za
-                zahtevnejše tehnične izzive, kjer šteje vsaka stotinka milimetra.
+                tradicijo natančne slovenske obrti s sodobno CNC tehnologijo. Sprejemamo zahtevnejše
+                tehnične izzive in jih izpeljemo z natančnostjo, ki jo naročniki pričakujejo.
               </p>
               <p className="text-[16px] lg:text-[17px] leading-relaxed text-[#3B4552]">
                 Sodelujemo z industrijskimi naročniki iz različnih panog — od strojne in kovinske

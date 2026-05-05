@@ -21,7 +21,7 @@ const STEPS = [
     step: '03',
     title: 'Izdelava',
     description:
-      'CNC obdelava, orodjarska izdelava in končna obdelava — kontrola kakovosti po vsakem koraku.',
+      'CNC obdelava, orodjarska izdelava in končna obdelava — vsak izdelek nastane po naročilu in tehničnih zahtevah naročnika.',
   },
   {
     step: '04',

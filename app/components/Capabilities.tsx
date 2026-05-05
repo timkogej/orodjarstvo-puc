@@ -2,15 +2,15 @@
 
 import { motion } from 'framer-motion';
 import { EASE_OUT, EASE_IN_OUT } from '@/lib/easing';
-import { Target, Gauge, Shield, Award, type LucideIcon } from 'lucide-react';
+import { UserCheck, Gauge, Shield, Award, type LucideIcon } from 'lucide-react';
 
 type Feature = { Icon: LucideIcon; title: string; description: string };
 
 const FEATURES: Feature[] = [
   {
-    Icon: Target,
-    title: 'Visoka natančnost',
-    description: 'Delamo v ozkih tolerancah ±0,01 mm. Vsak kos gre skozi kontrolo kakovosti.',
+    Icon: UserCheck,
+    title: 'Individualen pristop',
+    description: 'Vsak projekt obravnavamo posamično — od svetovanja pri izvedbi do predloga optimalnih rešitev za vaše tehnične zahteve.',
   },
   {
     Icon: Gauge,
@@ -89,7 +89,7 @@ export function Capabilities() {
               transition={{ duration: 0.8, ease: EASE_OUT, delay: 0.1 }}
             >
               Razumemo, da industrijski naročnik ne išče samo kosa — išče partnerja, ki razume
-              dogovorjene roke, tehnične zahteve in cene. Pri Pucu dobite vse to na enem mestu.
+              dogovorjene roke, tehnične zahteve in cene. Pri nas dobite vse to na enem mestu.
             </motion.p>
 
             {/* Image */}

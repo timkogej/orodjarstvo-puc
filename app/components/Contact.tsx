@@ -1,9 +1,13 @@
 'use client';
 
-import { useState, useActionState } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { EASE_OUT, EASE_IN_OUT } from '@/lib/easing';
-import { Mail, Phone, MapPin, Clock, Send, Check, ArrowUpRight } from 'lucide-react';
+import { EASE_OUT } from '@/lib/easing';
+import {
+  Mail, Phone, MapPin, Clock,
+  Send, Check, ArrowUpRight,
+  Upload, FileText, X, Loader2,
+} from 'lucide-react';
 import { sendInquiry } from '@/app/actions/sendInquiry';
 import { ContactRow } from './ui/ContactRow';
 import { FormField } from './ui/FormField';
@@ -27,43 +31,78 @@ const SERVICE_OPTIONS = [
   { value: 'drugo', label: 'Drugo / več storitev' },
 ];
 
+const ACCEPTED_EXTENSIONS = '.pdf,.jpg,.jpeg,.png,.dwg,.dxf,.step,.stp,.iges,.igs,.zip';
+const MAX_FILES = 3;
+const MAX_SIZE_MB = 10;
+const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+
 const inputClass =
   'w-full bg-transparent py-3 text-[15px] text-brand-bg outline-none placeholder:text-brand-text-dim-light/50';
 
-function SubmitButton({ pending, success }: { pending: boolean; success: boolean }) {
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="btn-primary btn-primary-light inline-flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-      style={success ? { background: '#2E6BFF', color: '#fff' } : undefined}
-    >
-      {pending ? (
-        <>
-          <span
-            className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"
-            aria-hidden="true"
-          />
-          Pošiljanje...
-        </>
-      ) : success ? (
-        <>
-          <Check size={15} />
-          Povpraševanje poslano
-        </>
-      ) : (
-        <>
-          <Send size={15} />
-          Pošlji povpraševanje
-        </>
-      )}
-    </button>
-  );
-}
-
 export function Contact() {
   const [storitev, setStoritev] = useState('');
-  const [state, action, pending] = useActionState(sendInquiry, null);
+  const [files, setFiles] = useState<File[]>([]);
+  const [fileError, setFileError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFileError('');
+    const selectedFiles = Array.from(e.target.files || []);
+    if (selectedFiles.length === 0) return;
+    const combined = [...files, ...selectedFiles];
+    if (combined.length > MAX_FILES) {
+      setFileError(`Največ ${MAX_FILES} datoteke hkrati.`);
+      return;
+    }
+    const totalSize = combined.reduce((sum, f) => sum + f.size, 0);
+    if (totalSize > MAX_SIZE_BYTES) {
+      setFileError(`Skupna velikost datotek presega ${MAX_SIZE_MB} MB.`);
+      return;
+    }
+    setFiles(combined);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const removeFile = (index: number) => {
+    setFiles(files.filter((_, i) => i !== index));
+    setFileError('');
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+    return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setSubmitResult(null);
+
+    const formData = new FormData(e.currentTarget);
+    files.forEach((file) => {
+      formData.append('files', file);
+    });
+
+    try {
+      const result = await sendInquiry(formData);
+      setSubmitResult(result);
+      if (result.success) {
+        setStoritev('');
+        setFiles([]);
+        (e.currentTarget as HTMLFormElement).reset();
+      }
+    } catch {
+      setSubmitResult({
+        success: false,
+        message: 'Pri pošiljanju je prišlo do napake. Poskusite znova ali pokličite na 031 252 353.',
+      });
+    } finally {
+      setSubmitting(false);
+      setTimeout(() => setSubmitResult(null), 6000);
+    }
+  };
 
   return (
     <section id="kontakt" className="relative bg-brand-light py-24 lg:py-36">
@@ -163,7 +202,7 @@ export function Contact() {
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 1, ease: EASE_OUT, delay: 0.1 }}
           >
-            <form action={action} className="space-y-6">
+            <form onSubmit={onSubmit} className="space-y-6">
               {/* Row 1 */}
               <div className="grid sm:grid-cols-2 gap-6">
                 <FormField label="Ime in priimek *">
@@ -228,18 +267,112 @@ export function Contact() {
                 />
               </FormField>
 
-              {/* Error message */}
-              {state && !state.success && (
-                <p className="text-sm text-red-600">{state.message}</p>
-              )}
+              {/* File upload */}
+              <FormField label="Priložite načrt, sliko ali drugo datoteko (neobvezno)">
+                <div className="pt-3 pb-2">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={files.length >= MAX_FILES}
+                    className="inline-flex items-center gap-3 px-5 py-3 border border-brand-bg-line bg-white hover:border-brand-accent hover:bg-brand-accent/5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{ borderRadius: 2 }}
+                  >
+                    <Upload size={16} className="text-brand-accent" />
+                    <span className="font-mono text-[12px] tracking-[0.16em] uppercase text-brand-bg">
+                      {files.length === 0 ? 'Izberi datoteke' : 'Dodaj še datoteko'}
+                    </span>
+                  </button>
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept={ACCEPTED_EXTENSIONS}
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+
+                  <p className="mt-3 font-mono text-[10.5px] tracking-[0.14em] uppercase text-brand-text-dim-light">
+                    Do {MAX_FILES} datoteke · Skupaj največ {MAX_SIZE_MB} MB · PDF, JPG, PNG, DWG, DXF, STEP, IGES, ZIP
+                  </p>
+
+                  {fileError && (
+                    <p className="mt-2 text-[12.5px] text-red-600 font-medium">{fileError}</p>
+                  )}
+
+                  {files.length > 0 && (
+                    <ul className="mt-4 space-y-2">
+                      {files.map((file, i) => (
+                        <li
+                          key={i}
+                          className="flex items-center justify-between gap-3 px-4 py-3 bg-white border border-brand-bg-line"
+                          style={{ borderRadius: 2 }}
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            <FileText size={16} className="flex-shrink-0 text-brand-accent" />
+                            <div className="min-w-0">
+                              <div className="text-[14px] font-medium text-brand-bg truncate">
+                                {file.name}
+                              </div>
+                              <div className="font-mono text-[10.5px] tracking-[0.12em] uppercase text-brand-text-dim-light">
+                                {formatFileSize(file.size)}
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeFile(i)}
+                            className="flex-shrink-0 w-8 h-8 flex items-center justify-center text-brand-text-dim-light hover:text-red-600 transition-colors"
+                            aria-label="Odstrani datoteko"
+                          >
+                            <X size={16} />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </FormField>
 
               {/* Form footer */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4">
                 <span className="text-[12px] font-mono text-brand-text-dim-light">
                   * Obvezna polja · Odgovor v 24 urah
                 </span>
-                <SubmitButton pending={pending} success={!!state?.success} />
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="btn-primary flex items-center justify-center gap-2.5 px-7 py-4 text-[14px] font-semibold disabled:opacity-70"
+                  style={{
+                    borderRadius: 2,
+                    background: submitResult?.success ? '#2E6BFF' : '#0B0F14',
+                    color: '#fff',
+                  }}
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Pošiljanje...
+                    </>
+                  ) : submitResult?.success ? (
+                    <>
+                      <Check size={16} />
+                      Povpraševanje poslano
+                    </>
+                  ) : (
+                    <>
+                      Pošlji povpraševanje
+                      <Send size={15} />
+                    </>
+                  )}
+                </button>
               </div>
+
+              {submitResult && !submitResult.success && (
+                <p className="mt-3 text-[13px] text-red-600 font-medium">
+                  {submitResult.message}
+                </p>
+              )}
             </form>
           </motion.div>
         </div>

@@ -12,7 +12,7 @@ const SERVICES: Service[] = [
     title: 'CNC Rezkanje',
     Icon: Cpu,
     description:
-      '3-, 4- in 5-osno CNC rezkanje kovin. Obdelava prototipov, posameznih kosov in manjših serij z visoko ponovljivostjo.',
+      '3- in 4-osno CNC rezkanje kovin. Obdelava prototipov, posameznih kosov in manjših serij z visoko ponovljivostjo.',
   },
   {
     title: 'CNC Struženje',
@@ -24,13 +24,13 @@ const SERVICES: Service[] = [
     title: 'Brušenje',
     Icon: Layers,
     description:
-      'Fino brušenje ravnih in okroglih površin za zahtevno površinsko kakovost in visoko dimenzijsko natančnost.',
+      'Fino brušenje ravnih površin za zahtevno površinsko kakovost in visoko dimenzijsko natančnost.',
   },
   {
     title: 'Orodjarstvo',
     Icon: Wrench,
     description:
-      'Izdelava, servis in vzdrževanje orodij, kalupov ter priprav za serijsko proizvodnjo in industrijske aplikacije.',
+      'Izdelava, servis in vzdrževanje orodij za naročnike iz različnih panog. Manjši popravki, prilagoditve in obnove obstoječih orodij.',
   },
   {
     title: 'Izdelava po načrtih',
