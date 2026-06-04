@@ -21,8 +21,8 @@ export default function Home() {
         <About />
         <Services />
         <Process />
-        <Capabilities />
         <CtaBand />
+        <Capabilities />
         <Contact />
       </main>
       <Footer />

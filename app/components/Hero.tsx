@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { EASE_OUT } from '@/lib/easing';
 
 const heroContainer = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
 };
 const heroItem = {
   hidden: { opacity: 0, y: 24 },
@@ -33,6 +33,18 @@ function scrollTo(id: string) {
 export function Hero() {
   const [desktopImgError, setDesktopImgError] = useState(false);
   const [mobileImgError, setMobileImgError] = useState(false);
+  const [desktopImgLoaded, setDesktopImgLoaded] = useState(false);
+  const [mobileImgLoaded, setMobileImgLoaded] = useState(false);
+  const desktopImgRef = useRef<HTMLImageElement>(null);
+  const mobileImgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (desktopImgRef.current?.complete) setDesktopImgLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (mobileImgRef.current?.complete) setMobileImgLoaded(true);
+  }, []);
 
   return (
     <div id="hero">
@@ -74,11 +86,15 @@ export function Hero() {
               </div>
             ) : (
               <img
+                ref={desktopImgRef}
                 src="/images/puc-hero.jpg"
                 alt="CNC obdelava kovine"
                 className="w-full h-full object-cover"
                 style={{ filter: 'contrast(1.05) brightness(0.92)' }}
-                onError={() => setDesktopImgError(true)}
+                fetchPriority="high"
+                loading="eager"
+                onLoad={() => setDesktopImgLoaded(true)}
+                onError={() => { setDesktopImgError(true); setDesktopImgLoaded(true); }}
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-r from-brand-bg/40 via-transparent to-transparent" />
@@ -107,7 +123,7 @@ export function Hero() {
         {/* Desktop content */}
         <div className="relative z-10 max-w-container mx-auto px-10 pt-[120px] pb-24 min-h-[100svh] flex flex-col justify-center">
           <div className="max-w-[58%]">
-            <motion.div variants={heroContainer} initial="hidden" animate="visible">
+            <motion.div variants={heroContainer} initial="hidden" animate={desktopImgLoaded || desktopImgError ? "visible" : "hidden"}>
               <motion.div variants={heroItem} className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-brand-accent flex-shrink-0" />
                 <span className="font-mono text-[11px] tracking-[0.22em] uppercase text-brand-text-dim">
@@ -200,11 +216,15 @@ export function Hero() {
             </div>
           ) : (
             <img
+              ref={mobileImgRef}
               src="/images/puc-hero-mobile.jpg"
               alt="CNC obdelava kovine"
               className="w-full h-full object-cover object-center"
               style={{ filter: 'contrast(1.05) brightness(0.85)' }}
-              onError={() => setMobileImgError(true)}
+              fetchPriority="high"
+              loading="eager"
+              onLoad={() => setMobileImgLoaded(true)}
+              onError={() => { setMobileImgError(true); setMobileImgLoaded(true); }}
             />
           )}
           {/* Gradient — dark at bottom where text sits, lighter at top */}
@@ -221,7 +241,7 @@ export function Hero() {
 
         {/* Content pushed to bottom */}
         <div className="relative z-10 flex flex-col justify-end min-h-[100svh] px-6 pt-[120px] pb-16">
-          <motion.div variants={heroContainer} initial="hidden" animate="visible">
+          <motion.div variants={heroContainer} initial="hidden" animate={mobileImgLoaded || mobileImgError ? "visible" : "hidden"}>
             {/* Eyebrow */}
             <motion.div variants={heroItem} className="flex items-center gap-3 mb-5">
               <div className="w-8 h-px bg-brand-accent flex-shrink-0" />

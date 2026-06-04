@@ -80,28 +80,37 @@ export function Contact() {
     setSubmitting(true);
     setSubmitResult(null);
 
-    const formData = new FormData(e.currentTarget);
-    files.forEach((file) => {
-      formData.append('files', file);
-    });
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
+    files.forEach((file) => formData.append('files', file));
 
+    let result: { success: boolean; message: string };
     try {
-      const result = await sendInquiry(formData);
-      setSubmitResult(result);
-      if (result.success) {
-        setStoritev('');
-        setFiles([]);
-        (e.currentTarget as HTMLFormElement).reset();
-      }
-    } catch {
-      setSubmitResult({
+      result = await sendInquiry(formData);
+    } catch (error) {
+      console.error('[Contact] sendInquiry threw an exception:', error);
+      result = {
         success: false,
         message: 'Pri pošiljanju je prišlo do napake. Poskusite znova ali pokličite na 031 252 353.',
-      });
-    } finally {
-      setSubmitting(false);
-      setTimeout(() => setSubmitResult(null), 6000);
+      };
     }
+
+    setSubmitResult(result);
+    setSubmitting(false);
+
+    if (result.success) {
+      try {
+        setStoritev('');
+        setFiles([]);
+        if (formElement && typeof formElement.reset === 'function') {
+          formElement.reset();
+        }
+      } catch (resetError) {
+        console.warn('[Contact] Form reset failed (non-critical):', resetError);
+      }
+    }
+
+    setTimeout(() => setSubmitResult(null), 6000);
   };
 
   return (
@@ -342,7 +351,7 @@ export function Contact() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="btn-primary flex items-center justify-center gap-2.5 px-7 py-4 text-[14px] font-semibold disabled:opacity-70"
+                  className="btn-primary flex items-center justify-center gap-2.5 px-7 py-4 text-[14px] font-semibold disabled:opacity-70 transition-colors"
                   style={{
                     borderRadius: 2,
                     background: submitResult?.success ? '#2E6BFF' : '#0B0F14',
@@ -368,10 +377,26 @@ export function Contact() {
                 </button>
               </div>
 
-              {submitResult && !submitResult.success && (
-                <p className="mt-3 text-[13px] text-red-600 font-medium">
-                  {submitResult.message}
-                </p>
+              {submitResult && (
+                <div
+                  className={`mt-4 p-4 border-l-4 ${
+                    submitResult.success
+                      ? 'bg-brand-accent/8 border-brand-accent text-brand-bg'
+                      : 'bg-red-50 border-red-600 text-red-700'
+                  }`}
+                  style={{ borderRadius: 2 }}
+                >
+                  <div className="flex items-start gap-3">
+                    {submitResult.success ? (
+                      <Check size={20} className="text-brand-accent flex-shrink-0 mt-0.5" />
+                    ) : (
+                      <X size={20} className="text-red-600 flex-shrink-0 mt-0.5" />
+                    )}
+                    <p className="text-[14px] font-medium leading-relaxed">
+                      {submitResult.message}
+                    </p>
+                  </div>
+                </div>
               )}
             </form>
           </motion.div>
