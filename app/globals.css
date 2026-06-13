@@ -68,6 +68,7 @@
 
 .marquee-track {
   animation: marquee 40s linear infinite;
+  will-change: transform;
 }
 
 /* Form field underline animation */

@@ -92,11 +92,21 @@ export function Footer() {
               Pravno obvestilo
             </button>
             <span className="opacity-30">·</span>
-            <button className="hover:text-white transition-colors cursor-default">
+            <a href="/zasebnost" className="hover:text-white transition-colors">
               Zasebnost
-            </button>
+            </a>
             <span className="opacity-30">·</span>
-            <span className="opacity-50">Izdelava: Jedro Systems</span>
+            <span className="opacity-50">
+              Izdelava:{' '}
+              <a
+                href="https://jedroplus.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                JedroPlus
+              </a>
+            </span>
           </div>
         </div>
       </div>

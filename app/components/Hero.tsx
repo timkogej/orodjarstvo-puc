@@ -39,11 +39,15 @@ export function Hero() {
   const mobileImgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    if (desktopImgRef.current?.complete) setDesktopImgLoaded(true);
+    if (desktopImgRef.current?.complete) { setDesktopImgLoaded(true); return; }
+    const t = setTimeout(() => setDesktopImgLoaded(true), 2500);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
-    if (mobileImgRef.current?.complete) setMobileImgLoaded(true);
+    if (mobileImgRef.current?.complete) { setMobileImgLoaded(true); return; }
+    const t = setTimeout(() => setMobileImgLoaded(true), 2500);
+    return () => clearTimeout(t);
   }, []);
 
   return (

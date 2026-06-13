@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { ArrowRight, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { EASE_OUT } from '@/lib/easing';
 import { Logo } from './ui/Logo';
 import { NAV_LINKS } from '@/lib/constants';
 
@@ -108,33 +110,71 @@ export function Navbar() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label={menuOpen ? 'Zapri meni' : 'Odpri meni'}
         >
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          <AnimatePresence mode="wait" initial={false}>
+            {menuOpen ? (
+              <motion.span
+                key="close"
+                initial={{ opacity: 0, rotate: -45 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 45 }}
+                transition={{ duration: 0.18 }}
+                style={{ display: 'block' }}
+              >
+                <X size={24} />
+              </motion.span>
+            ) : (
+              <motion.span
+                key="menu"
+                initial={{ opacity: 0, rotate: 45 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: -45 }}
+                transition={{ duration: 0.18 }}
+                style={{ display: 'block' }}
+              >
+                <Menu size={24} />
+              </motion.span>
+            )}
+          </AnimatePresence>
         </button>
       </nav>
 
       {/* Mobile menu */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-40 bg-brand-bg flex flex-col pt-[72px] px-6">
-          <div className="flex flex-col gap-2 mt-8">
-            {NAV_LINKS.map((link) => (
-              <button
-                key={link.href}
-                onClick={() => { scrollTo(link.href); setMenuOpen(false); }}
-                className="text-left text-[22px] font-display font-bold text-white py-3 border-b border-brand-bg-line hover:text-brand-accent transition-colors"
-              >
-                {link.label}
-              </button>
-            ))}
-          </div>
-          <button
-            onClick={() => { scrollTo('#kontakt'); setMenuOpen(false); }}
-            className="btn-primary btn-primary-light mt-8 self-start"
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="fixed inset-0 z-40 bg-brand-bg flex flex-col pt-[72px] px-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
           >
-            Pošljite povpraševanje
-            <ArrowRight size={15} />
-          </button>
-        </div>
-      )}
+            <div className="flex flex-col gap-2 mt-8">
+              {NAV_LINKS.map((link, i) => (
+                <motion.button
+                  key={link.href}
+                  onClick={() => { scrollTo(link.href); setMenuOpen(false); }}
+                  className="text-left text-[22px] font-display font-bold text-white py-3 border-b border-brand-bg-line hover:text-brand-accent transition-colors"
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.25, ease: EASE_OUT, delay: 0.05 + i * 0.06 }}
+                >
+                  {link.label}
+                </motion.button>
+              ))}
+            </div>
+            <motion.button
+              onClick={() => { scrollTo('#kontakt'); setMenuOpen(false); }}
+              className="btn-primary btn-primary-light mt-8 self-start inline-flex items-center gap-2"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: EASE_OUT, delay: 0.25 }}
+            >
+              Pošljite povpraševanje
+              <ArrowRight size={15} />
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

@@ -15,7 +15,7 @@ const TEST_MODE = true;
 // account with. For Tim, that is tim.kogej@jedroplus.com.
 // To send to any other address (including @gmail.com), you must first
 // verify a domain at https://resend.com/domains.
-const TEST_RECIPIENT = 'tim.kogej@jedroplus.com';
+const TEST_RECIPIENT = 'tim.kogej@gmail.com';
 const PRODUCTION_RECIPIENT = 'orodjarstvo.puc@gmail.com';
 
 const ALLOWED_EXTENSIONS = ['pdf', 'jpg', 'jpeg', 'png', 'dwg', 'dxf', 'step', 'stp', 'iges', 'igs', 'zip'];
@@ -132,7 +132,7 @@ export async function sendInquiry(formData: FormData) {
     storitev: storitev || undefined,
     sporocilo,
     attachments: templateAttachments,
-    testMode: TEST_MODE,
+    testMode: false,
   });
 
   const textBody = renderInquiryEmailText({
@@ -143,7 +143,7 @@ export async function sendInquiry(formData: FormData) {
     storitev: storitev || undefined,
     sporocilo,
     attachments: templateAttachments,
-    testMode: TEST_MODE,
+    testMode: false,
   });
 
   console.log(`[sendInquiry] Sending email to: ${recipient}`);
@@ -152,7 +152,7 @@ export async function sendInquiry(formData: FormData) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Orodjarstvo Puc <onboarding@resend.dev>',
+      from: 'Orodjarstvo Puc <puc@jedroplus.com>',
       to: [recipient],
       replyTo: email,
       subject,
