@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Orodjarstvo Puc d.o.o.',
   shortName: 'Orodjarstvo Puc',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://orodjarstvo-puc.si',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://orodjarstvo-puc.com',
   description:
     'Natančna izdelava orodij, CNC rezkanje, struženje in brušenje kovin za industrijske naročnike. 10+ let izkušenj. Loka 14, Logatec.',
   locale: 'sl_SI',
