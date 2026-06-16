@@ -8,7 +8,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // ============================================================
 // TEST MODE — set to false when ready for production
 // ============================================================
-const TEST_MODE = true;
+const TEST_MODE = false;
 
 // IMPORTANT: With Resend's `onboarding@resend.dev` (unverified test sender),
 // you can ONLY send emails to the email address you registered your Resend
