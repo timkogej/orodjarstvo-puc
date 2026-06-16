@@ -17,6 +17,7 @@ const heroItem = {
 const CHIPS = [
   'CNC rezkanje',
   'CNC struženje',
+  'FDM 3D print',
   'Brušenje',
   'Orodjarstvo',
   'Deli za stroje',
@@ -94,7 +95,11 @@ export function Hero() {
                 src="/images/puc-hero.jpg"
                 alt="CNC obdelava kovine"
                 className="w-full h-full object-cover"
-                style={{ filter: 'contrast(1.05) brightness(0.92)' }}
+                style={{
+                  filter: 'contrast(1.05) brightness(0.92)',
+                  opacity: desktopImgLoaded ? 1 : 0,
+                  transition: 'opacity 0.7s ease-out',
+                }}
                 fetchPriority="high"
                 loading="eager"
                 onLoad={() => setDesktopImgLoaded(true)}
@@ -104,8 +109,13 @@ export function Hero() {
             <div className="absolute inset-0 bg-gradient-to-r from-brand-bg/40 via-transparent to-transparent" />
           </div>
 
-          {/* Diagonal accent line */}
-          <div className="absolute inset-0 pointer-events-none">
+          {/* Diagonal accent line — appears together with the hero image */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: desktopImgLoaded || desktopImgError ? 1 : 0 }}
+            transition={{ duration: 0.7, ease: EASE_OUT }}
+          >
             <svg
               className="absolute inset-0 w-full h-full"
               preserveAspectRatio="none"
@@ -121,7 +131,7 @@ export function Hero() {
                 style={{ strokeWidth: '1px' }}
               />
             </svg>
-          </div>
+          </motion.div>
         </div>
 
         {/* Desktop content */}

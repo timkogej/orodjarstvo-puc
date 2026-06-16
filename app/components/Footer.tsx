@@ -88,9 +88,9 @@ export function Footer() {
             © {year} Orodjarstvo Puc d.o.o. · Vse pravice pridržane
           </span>
           <div className="flex items-center gap-4 font-mono text-[11px] text-brand-text-dim">
-            <button className="hover:text-white transition-colors cursor-default">
-              Pravno obvestilo
-            </button>
+            <a href="/splosni-pogoji" className="hover:text-white transition-colors">
+              Splošni pogoji
+            </a>
             <span className="opacity-30">·</span>
             <a href="/zasebnost" className="hover:text-white transition-colors">
               Zasebnost

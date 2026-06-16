@@ -2,23 +2,23 @@
 
 import { motion } from 'framer-motion';
 import { EASE_OUT, EASE_IN_OUT } from '@/lib/easing';
-import { Cpu, Cog, Layers, Wrench, Box, Zap, type LucideIcon } from 'lucide-react';
+import { Cpu, Printer, Layers, Wrench, Box, Zap, type LucideIcon } from 'lucide-react';
 import { ServiceCard } from './ui/ServiceCard';
 
 type Service = { title: string; Icon: LucideIcon; description: string };
 
 const SERVICES: Service[] = [
   {
-    title: 'CNC Rezkanje',
+    title: 'CNC rezkanje in struženje',
     Icon: Cpu,
     description:
-      '3- in 4-osno CNC rezkanje kovin. Obdelava prototipov, posameznih kosov in manjših serij z visoko ponovljivostjo.',
+      '3- in 4-osno CNC rezkanje ter natančno struženje kovin. Od prototipov in posameznih kosov do manjših serij — z ozkimi tolerancami in visoko ponovljivostjo.',
   },
   {
-    title: 'CNC Struženje',
-    Icon: Cog,
+    title: 'FDM 3D print',
+    Icon: Printer,
     description:
-      'Natančno struženje okroglih in cilindričnih komponent z ozkimi tolerancami in odlično kakovostjo površine.',
+      'Hitra izdelava funkcionalnih prototipov, ohišij in delov s FDM 3D tiskom. Idealno za preverjanje oblike in zasnove pred kovinsko izdelavo.',
   },
   {
     title: 'Brušenje',

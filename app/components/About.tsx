@@ -68,14 +68,8 @@ export function About() {
               <span className="text-brand-accent">Sodobna</span> tehnologija.
             </motion.h2>
 
-            {/* Image */}
-            <motion.div
-              className="mt-10 max-w-sm relative overflow-hidden"
-              initial={{ clipPath: 'inset(0 100% 0 0)' }}
-              whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: EASE_IN_OUT, delay: 0.2 }}
-            >
+            {/* Image — smooth transform-based wipe reveal (GPU accelerated) */}
+            <div className="mt-10 max-w-sm relative overflow-hidden">
               <div className="aspect-[4/5] w-full">
                 <img
                   src="/images/puc-image-2.jpg"
@@ -83,12 +77,21 @@ export function About() {
                   className="w-full h-full object-cover"
                 />
               </div>
+              {/* Cover overlay slides off to reveal the image */}
+              <motion.div
+                className="absolute inset-0 bg-brand-light"
+                style={{ willChange: 'transform' }}
+                initial={{ x: '0%' }}
+                whileInView={{ x: '101%' }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, ease: EASE_IN_OUT, delay: 0.2 }}
+              />
               <div className="absolute bottom-0 left-0 bg-brand-bg px-3 py-2">
                 <span className="font-mono text-[10px] uppercase text-white tracking-[0.18em]">
                   DELAVNICA · LOGATEC
                 </span>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Right column */}
