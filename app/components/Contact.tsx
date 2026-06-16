@@ -28,6 +28,7 @@ const SERVICE_OPTIONS = [
   { value: 'orodjarstvo', label: 'Orodjarstvo' },
   { value: 'izdelava-po-nacrtih', label: 'Izdelava po načrtih' },
   { value: 'hitro-prototipiranje', label: 'Hitro prototipiranje' },
+  { value: 'fdm-3d-print', label: 'FDM 3D print' },
   { value: 'drugo', label: 'Drugo / več storitev' },
 ];
 

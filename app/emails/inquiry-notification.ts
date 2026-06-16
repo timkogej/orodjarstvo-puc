@@ -43,6 +43,7 @@ const SERVICE_LABELS: Record<string, string> = {
   'orodjarstvo': 'Orodjarstvo',
   'izdelava-po-nacrtih': 'Izdelava po načrtih',
   'hitro-prototipiranje': 'Hitro prototipiranje',
+  'fdm-3d-print': 'FDM 3D print',
   'drugo': 'Drugo / več storitev',
 };
 
