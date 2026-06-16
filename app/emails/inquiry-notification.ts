@@ -182,23 +182,7 @@ export function renderInquiryEmail(data: InquiryData): string {
           <!-- HEADER -->
           <tr>
             <td style="background:#0B0F14;padding:28px 32px;">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                <tr>
-                  <td style="vertical-align:middle;padding-right:14px;">
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                      <tr>
-                        <td width="32" height="32" style="background:#2E6BFF;text-align:center;vertical-align:middle;">
-                          <div style="width:14px;height:14px;background:#FFFFFF;display:inline-block;transform:rotate(45deg);margin-top:2px;">&nbsp;</div>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td style="vertical-align:middle;">
-                    <div style="color:#FFFFFF;font-size:15px;font-weight:700;letter-spacing:-0.02em;line-height:1.2;">Orodjarstvo Puc</div>
-                    <div style="color:rgba(255,255,255,0.6);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;font-family:'SF Mono',Menlo,Consolas,monospace;line-height:1.2;margin-top:2px;">D.O.O.</div>
-                  </td>
-                </tr>
-              </table>
+              <div style="color:#FFFFFF;font-size:16px;font-weight:700;letter-spacing:-0.02em;line-height:1.2;">Orodjarstvo Puc d.o.o.</div>
             </td>
           </tr>
 
