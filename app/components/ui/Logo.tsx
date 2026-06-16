@@ -1,9 +1,9 @@
 type Props = {
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'lg';
 };
 
 export function Logo({ size = 'md' }: Props) {
-  const imgSize = size === 'sm' ? 28 : 38;
+  const imgSize = size === 'sm' ? 28 : size === 'lg' ? 54 : 38;
 
   return (
     <div className="flex items-center gap-3">

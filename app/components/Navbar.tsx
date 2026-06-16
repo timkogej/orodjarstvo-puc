@@ -58,7 +58,7 @@ export function Navbar() {
           className="cursor-pointer flex-shrink-0"
           aria-label="Nazaj na vrh"
         >
-          <Logo />
+          <Logo size="lg" />
         </button>
 
         {/* Nav links — desktop */}

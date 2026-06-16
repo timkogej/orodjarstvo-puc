@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Fragment } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { EASE_OUT } from '@/lib/easing';
@@ -14,15 +14,19 @@ const heroItem = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EASE_OUT } },
 };
 
+// Ordered so the desktop view splits into two rows of four (4 + 4) with
+// roughly equal total width per row.
 const CHIPS = [
+  // Row 1
   'CNC rezkanje',
-  'CNC struženje',
   'FDM 3D print',
-  'Brušenje',
   'Orodjarstvo',
+  'Hitro prototipiranje',
+  // Row 2
+  'CNC struženje',
+  'Brušenje',
   'Deli za stroje',
   'Izdelava po načrtih',
-  'Hitro prototipiranje',
 ];
 
 
@@ -184,13 +188,16 @@ export function Hero() {
 
               <motion.div variants={heroItem} className="flex flex-wrap gap-2">
                 {CHIPS.map((chip, i) => (
-                  <span
-                    key={chip}
-                    className="inline-flex items-center gap-2 text-[12.5px] text-brand-text-dim border border-brand-bg-line rounded-full px-3.5 py-1.5 hover:border-brand-accent hover:text-brand-accent transition-colors cursor-default"
-                  >
-                    {i > 0 && <span className="opacity-30">—</span>}
-                    {chip}
-                  </span>
+                  <Fragment key={chip}>
+                    {/* Force a clean break into 4 + 4 rows */}
+                    {i === 4 && <div className="basis-full h-0" />}
+                    <span
+                      className="inline-flex items-center gap-2 text-[12.5px] text-brand-text-dim border border-brand-bg-line rounded-full px-3.5 py-1.5 hover:border-brand-accent hover:text-brand-accent transition-colors cursor-default"
+                    >
+                      {i % 4 !== 0 && <span className="opacity-30">—</span>}
+                      {chip}
+                    </span>
+                  </Fragment>
                 ))}
               </motion.div>
 
