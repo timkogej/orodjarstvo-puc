@@ -55,7 +55,7 @@ export function Navbar() {
         {/* Logo */}
         <button
           onClick={() => scrollTo('#hero')}
-          className="cursor-pointer"
+          className="cursor-pointer flex-shrink-0"
           aria-label="Nazaj na vrh"
         >
           <Logo />
